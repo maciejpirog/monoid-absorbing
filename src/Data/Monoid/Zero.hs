@@ -126,7 +126,7 @@ instance (MonoidLZero a, MonoidLZero b, MonoidLZero c, MonoidLZero d, MonoidLZer
 
 -- | Class of right zero monoids. Instances should satisfy:
 --
--- * @mappend rzero m = rzero@
+-- * @'mappend' rzero m = rzero@
 class (Monoid m) => MonoidRZero m where
   rzero :: m
 
