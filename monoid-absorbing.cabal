@@ -19,5 +19,5 @@ cabal-version:       >=1.8
 library
   exposed-modules:     Data.Monoid.Zero, Data.List.Cut
   -- other-modules:       
-  build-depends:       base ==4.5.*
+  build-depends:       base ==4.5.*, mtl
   hs-source-dirs:      src
