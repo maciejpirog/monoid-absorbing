@@ -17,7 +17,7 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 library
-  exposed-modules:     Data.Monoid.Zero
+  exposed-modules:     Data.Monoid.Zero, Data.List.Cut
   -- other-modules:       
   build-depends:       base ==4.5.*
   hs-source-dirs:      src
