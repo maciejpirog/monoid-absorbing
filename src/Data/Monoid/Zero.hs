@@ -1,5 +1,13 @@
 {-# LANGUAGE DeriveFunctor #-}
 
+{-|
+Module      : Data.Monoid.Zero
+Copyright   : (c) 2015 Maciej Piróg
+License     : MIT
+Maintainer  : maciej.adam.pirog@gmail.com
+Stability   : experimental
+
+-}
 module Data.Monoid.Zero
   (
     -- * Zero monoids
