@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveFunctor, TypeFamilies #-}
+{-# LANGUAGE DeriveFunctor #-}
 
 {-|
 Module      : Data.List.Cut
