@@ -12,7 +12,7 @@ license-file:        LICENSE
 author:              Maciej Piróg
 maintainer:          maciej.adam.pirog@gmail.com
 copyright:           2015 Maciej Piróg
-category:            Data
+category:            Algebra
 build-type:          Simple
 cabal-version:       >=1.8
 
