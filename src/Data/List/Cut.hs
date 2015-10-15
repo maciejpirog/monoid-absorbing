@@ -24,8 +24,6 @@ module Data.List.Cut
     cut,
     cutFail,
     scope,
-    -- -- * Additional functions
-    -- (+<>+),
 
     -- * Examples
 
