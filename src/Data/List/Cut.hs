@@ -18,8 +18,8 @@ module Data.List.Cut
     retract,
     -- * The @CutList@ monad
     CutList,
-    toList,
-    fromList,
+    cutToList,
+    cutFromList,
     -- * Control functions
     cut,
     cutFail,
@@ -37,7 +37,7 @@ import Control.Applicative (Alternative(..), Applicative(..), (<$>))
 import Control.Monad (liftM, MonadPlus(..), ap)
 import Control.Monad.Trans (MonadTrans(..))
 import Control.Monad.Identity (Identity(..))
-import Data.Foldable (Foldable (..))
+import Data.Foldable (Foldable(..))
 import Data.Traversable (Traversable(..))
 import Data.Monoid (Monoid(..))
 
@@ -107,15 +107,15 @@ retract (CutListT m) = m >>= aux
 type CutList = CutListT Identity
 
 -- | Convert to a regular list.
-toList :: CutList a -> [a]
-toList (CutListT (Identity t)) = aux t
+cutToList :: CutList a -> [a]
+cutToList (CutListT (Identity t)) = aux t
  where
   aux (CCons a (Identity t)) = a : aux t
   aux _                      = []
 
 -- | Convert from a regular list
-fromList :: [a] -> CutList a
-fromList xs = CutListT $ Identity $ aux xs
+cutFromList :: [a] -> CutList a
+cutFromList xs = CutListT $ Identity $ aux xs
  where
   aux (x : xs) = CCons x $ Identity $ aux xs
   aux _        = CNil
