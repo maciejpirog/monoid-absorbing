@@ -33,7 +33,7 @@ module Data.List.Cut
   )
   where
 
-import Control.Applicative (Applicative(..), (<$>))
+import Control.Applicative (Alternative(..), Applicative(..), (<$>))
 import Control.Monad (liftM, MonadPlus(..), ap)
 import Control.Monad.Trans (MonadTrans(..))
 import Control.Monad.Identity (Identity(..))
@@ -74,9 +74,13 @@ instance (Functor m, Monad m) => Applicative (CutListT m) where
 instance MonadTrans CutListT where
   lift m = CutListT $ liftM (\a -> CCons a $ return CNil) m
 
-instance (Monad m) => MonadPlus (CutListT m) where
-  mzero = CutListT $ return CNil 
-  mplus = (+<>+)
+instance (Functor m, Monad m) => Alternative (CutListT m) where
+  empty = CutListT $ return CNil 
+  (<|>) = (+<>+)
+
+instance (Functor m, Monad m) => MonadPlus (CutListT m) where
+  mzero = empty
+  mplus = (<|>)
 
 instance (Foldable m) => Foldable (CutListT m) where
   foldMap f (CutListT m) = foldMap (foldMap f) m
@@ -84,11 +88,11 @@ instance (Foldable m) => Foldable (CutListT m) where
 instance (Traversable m) => Traversable (CutListT m) where
   traverse f (CutListT m) = CutListT <$> traverse (traverse f) m
 
-instance (Monad m) => Monoid (CutListT m a) where
+instance (Functor m, Monad m) => Monoid (CutListT m a) where
   mempty = mzero
   mappend = mplus
 
-instance (Monad m) => MonoidRZero (CutListT m a) where
+instance (Functor m, Monad m) => MonoidRZero (CutListT m a) where
   rzero = CutListT $ return $ CCut
 
 -- | Ignore the elements on the list and combine the monadic
@@ -117,16 +121,16 @@ fromList xs = CutListT $ Identity $ aux xs
   aux _        = CNil
 
 -- | Discard yet uninspected choices.
-cut :: (Monad m) => CutListT m ()
+cut :: (Functor m, Monad m) => CutListT m ()
 cut = CutListT $ return CCut
 
 -- | Discard the uninspected choices and fail the current branch of
 -- computation. Equal to @'cut' '>>' 'mzero'@.
-cutFail :: (Monad m) => CutListT m ()
+cutFail :: (Functor m, Monad m) => CutListT m ()
 cutFail = cut >> mzero
 
 -- | Delimit the scope of cuts in the argument.
-scope :: (Monad m) => CutListT m a -> CutListT m a
+scope :: (Functor m, Monad m) => CutListT m a -> CutListT m a
 scope (CutListT m) = CutListT $ liftM aux m
  where
   aux (CCons a m) = CCons a (liftM aux m)
